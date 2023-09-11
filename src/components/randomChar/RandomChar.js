@@ -1,21 +1,38 @@
 import { Component } from 'react';
+import MarvelService from '../../services/MarvelService';
+
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
 
 class RandomChar extends Component {
 
-    state = {
-        name: null,
-        description: null,
-        thumbnail: null,
-        home: null,
-        wiki: null
+    constructor(props) {
+        super(props)
+        this.updateChar()
+    }
 
+    state = {
+        char:{}
+
+    }
+
+    marvelService = new MarvelService();
+
+    onCharLoader = (char) => {
+        this.setState({char})
+    }   
+
+    updateChar = () => {
+        let id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+
+        this.marvelService
+            .getCharacter(id)
+            .then(this.onCharLoader)
     }
 
     render() {
 
-        const { name, description, thumbnail, home, wiki } = this.state;
+        const { char:{name, description, thumbnail, homepage, wiki} } = this.state;
 
         return (
             <div className="randomchar">
@@ -25,7 +42,7 @@ class RandomChar extends Component {
                         <p className="randomchar__name">{name}</p>
                         <p className="randomchar__descr">{description}</p>
                         <div className="randomchar__btns">
-                            <a href={home} className="button button__main">
+                            <a href={homepage} className="button button__main">
                                 <div className="inner">homepage</div>
                             </a>
                             <a href={wiki} className="button button__secondary">
