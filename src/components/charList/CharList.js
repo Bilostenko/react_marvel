@@ -18,9 +18,6 @@ class CharList extends Component {
     marvelService = new MarvelService();
 
     componentDidMount() {
-        // this.marvelService.getAllCharacters()
-        //     .then(this.onCharListLoaded)
-        //     .catch(this.onError)
         this.onRequest()
     }
 
@@ -61,7 +58,16 @@ class CharList extends Component {
         })
     }
 
-    renderItems(arr) {
+    itemRefs = []
+    setRef = elem => {
+        this.myRef = elem
+    }
+    addRef = ref => {
+        this.ref.push(ref)
+        console.log(this.ref)
+    }
+
+    renderItems(arr) {  
         const items = arr.map((item) => {
             let imgStyle = { 'objectFit': 'cover' };
             if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
@@ -71,6 +77,7 @@ class CharList extends Component {
             return (
                 <li
                     className="char__item"
+                    ref={this.setRef}
                     key={item.id}
                     onClick={() => this.props.onCharSelected(item.id)}>
                     <img src={item.thumbnail} alt={item.name} style={imgStyle} />
